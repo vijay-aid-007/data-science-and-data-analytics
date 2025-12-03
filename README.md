@@ -14,7 +14,7 @@ It contains hands-on data analysis files, real-world datasets, and Python practi
 | `lego_dataset.py` | Notebook | Analysis on LEGO dataset to find trends, patterns, and key insights. |
 | `pokeman.py` | Notebook | Dataset exploration using Pokémon statistics (fun analytics project). |
 | `zomato_problem.py` | Notebook | Analytics using Zomato dataset to understand ratings, pricing, and consumer patterns. |
-| `Stats.py` | PY_file | probabilites and satats concepts like Testing and all |
+| `Stats.py` | Py file | probabilites and satats concepts like Testing and all |
 
 
 ---
