@@ -10,10 +10,12 @@ It contains hands-on data analysis files, real-world datasets, and Python practi
 | File Name | Type | Description |
 |-----------|-------|-------------|
 | `EDA_practise.ipynb` | Notebook | Complete Exploratory Data Analysis with visual insights and feature exploration. |
-| `Real_world_Sales_Problems.py` | Script | Analytics exercise solving business queries using sales datasets. |
-| `lego_dataset.py` | Script | Analysis on LEGO dataset to find trends, patterns, and key insights. |
-| `pokeman.py` | Script | Dataset exploration using Pokémon statistics (fun analytics project). |
-| `zomato_problem.py` | Script | Analytics using Zomato dataset to understand ratings, pricing, and consumer patterns. |
+| `Real_world_Sales_Problems.py` | Notebook | Analytics exercise solving business queries using sales datasets. |
+| `lego_dataset.py` | Notebook | Analysis on LEGO dataset to find trends, patterns, and key insights. |
+| `pokeman.py` | Notebook | Dataset exploration using Pokémon statistics (fun analytics project). |
+| `zomato_problem.py` | Notebook | Analytics using Zomato dataset to understand ratings, pricing, and consumer patterns. |
+| `Stats.py` | PY_file | probabilites and satats concepts like Testing and all |
+
 
 ---
 
