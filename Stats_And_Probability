@@ -1,0 +1,372 @@
+import numpy as np
+import pandas as pd 
+import scipy.stats
+from scipy.stats import poisson
+from scipy.stats import ttest_1samp ,ttest_ind, ttest_rel , t , poisson , binom , zscore
+
+"""
+Q1. 	From the pack of 52 cards, three cards are drawn randomly without replacement then what 
+is the probability that one card is a diamond, one card is a heart and one is spade? 	[10] 
+"""
+
+# total_cards = 52
+# diamonds = 13
+# hearts = 13
+# spades = 13
+# # Calculate the probability
+# prob = (diamonds / total_cards) * (hearts / (total_cards - 1)) * (spades / (total_cards - 2))
+# print(f"The probability of drawing one diamond, one heart, and one spade is:", {prob*100})
+
+
+from math import comb
+
+diamonds = 13
+hearts = 13
+spades = 13
+total_cards = 52
+
+# Number of ways to choose 1 diamond, 1 heart, 1 spade
+favorable = diamonds * hearts * spades
+
+# Total ways to choose any 3 cards
+total_ways = comb(total_cards, 3)
+
+# Probability
+probability = favorable / total_ways
+print(f"Probability of drawing one diamond, one heart, and one spade: {probability*100:.4f}")
+
+""" Q2.
+The information was gathered by a survey done by a production company: 
+42 % of the respondents said that they like action movies, 54 % like comedy movies, 36 % like drama movies, and 12 % like horror movies. 
+If a person is selected at random, find the probability that his or her favourite movie type is either action or drama. 
+"""
+
+action = 42 
+drama = 36 
+
+probability_that_persons_like_Action_and_drama = (action + drama ) / 100 
+
+print(f"2nd Sol : probability of the person that like both action and drama : {probability_that_persons_like_Action_and_drama*100}")
+
+
+
+"""
+Q3. 	An MNC company receives 450 applications from applicants in one hour. Find the probability of 
+a.	Receiving 10 applications in 1 minute. 
+b.	Receiving at least 17 applications in 2 minutes. 	[10] 
+
+"""
+
+avg_per_hour = 450
+average_1min = avg_per_hour / 60  
+average_2min = average_1min * 2    
+
+# a. Probability of receiving 10 applications in 1 minute 
+# Here we are recieving  Exact 10 APPLICATION , USE PROBABILITY MASS FUNCTION STARIGHT AWAY
+
+prob_10_in_1min = poisson.pmf(10, average_1min)
+print(f"Probability of receiving 10 applications in 1 minute: {prob_10_in_1min*100} %")
+
+# b. Probability of receiving at least 17 applications in 2 minutes
+#assuming the we can receive 17 applications or may be less than 17 application , So We are using COMPLEMENT RULE To solve this one
+
+prob_at_least_17_in_2min = 1 - poisson.cdf(16, average_2min)
+print(f"Probability of receiving at least 17 applications in 2 minutes: {prob_at_least_17_in_2min*100} %")   
+
+
+
+"""
+Q4. 	The government of state union has declared a free medical insurance for below poverty line population by using following assumptions:
+
+a.	In every year, there can be at most one patient who needs medical insurance in a family. 
+b.	Every year, the probability of a medical emergency is 0.05.** 
+c.	The number of patients every year is independent. 
+ 
+ (Using the assumptions, calculate the probability that there are fewer than 3 patients in a 10 years period in one family**) 	[10] 
+
+"""
+
+
+
+n_years = 10
+p_emergency = 0.05
+
+# Probability of fewer than 3 patients in 10 years x<= 3 or  x <= 2 or x <=1 ,BUT NOT EXCEEDS THE LIMIT 3 , 
+# S0 USE CUMULATIVE DISTRIBUTION FUNCTION TO SUM PROBABILITES OF 1 , 2 , 3 i am assuming (i.e., P(X ≤ 2)) 
+
+#BINOMIAL DISTRIBUTION TAKES ONLY SUCESS IN BERNOULLI TRAIL
+
+
+k = 2 #(i.e., P(X ≤ 2))
+
+prob_fewer_than_3 = binom.cdf(k, n_years, p_emergency)
+print(f"Probability that there are fewer than 3 patients in 10 years: {prob_fewer_than_3*100}%")
+
+"""
+Q5. 	A bag A contains 3 red and 5 black balls and bag B contains 4 white and 7 black balls. A bag is selected randomly and a ball is drawn from it. 
+A drawn ball is observed to be black. Find the probability that bag ‘B’ was selected. 	[10] 
+"""
+
+# Q5. Probability that bag B was selected given a black ball was drawn
+
+# Probabilities
+P_A1 = 0.5  # Bag A
+P_A2 = 0.5  # Bag B
+
+P_B_given_A1 = 5 / 8
+P_B_given_A2 = 7 / 11
+
+# Total probability of drawing a black ball
+P_B = P_A1 * P_B_given_A1 + P_A2 * P_B_given_A2
+
+# Bayes' theorem
+P_A2_given_B = (P_A2 * P_B_given_A2) / P_B
+
+print(f"Probability that bag B was selected given a black ball was drawn: {P_A2_given_B:.4f}")
+
+
+
+
+
+
+"""
+Q6. 	data = [152, 153, 154,20,55,26,64,88,150, 151, 155, 
+156,157,158,159, 250, 158, 22,33,43,159, 160, 161, 162, 163, 164, 
+165, 166, 167, 168, 169, 170, 171, 172, 355, 174, 175, 176, 177,178, 
+300] 
+a) Calculate the mean and standard deviation of these observations and 
+check if calculated Z-statistics can be applied or not. b) Obtain the descriptive statistics of the data. 	[10] 
+
+"""
+from scipy.stats import zscore 
+
+
+data = [152, 153, 154,20,55,26,64,88,150, 151, 155, 
+156,157,158,159, 250, 158, 22,33,43,159, 160, 161, 162, 163, 164, 
+165, 166, 167, 168, 169, 170, 171, 172, 355, 174, 175, 176, 177,178, 
+300] 
+
+mean = np.mean(data)
+print(f'mean of the data {mean}')
+standard_deviation = np.std(data)
+print(f"standard deviation of the data {standard_deviation}")
+
+calculate_z_score = zscore(data , ddof=1) 
+print(f"calculated Z_score {np.round(calculate_z_score , 2)}")
+
+#Iam converted this data into panads dataframe and described this will gives the descriptive statistics of the data
+df = pd.DataFrame(data)
+print(df.describe())
+
+
+"""
+Q7. 	Identify the outliers from the data and if any present remove it. 
+Data =[152, 153, 154,20,55,26,64,88,150, 151, 155, 
+156,157,158,159, 250, 158, 22,33,43,159, 160, 161, 162, 163, 164,165, 166, 167, 
+168, 169, 170, 171, 172, 355, 174, 175, 176, 177,178, 300 ]. 	[10] 
+
+"""
+
+import numpy as np
+
+data = [152, 153, 154, 20, 55, 26, 64, 88, 150, 151, 155, 
+        156, 157, 158, 159, 250, 158, 22, 33, 43, 159, 160, 
+        161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 
+        172, 355, 174, 175, 176, 177, 178, 300]
+
+# Calculate Q1 and Q3
+Q1 = np.percentile(data, 25)
+Q3 = np.percentile(data, 75)
+IQR = Q3 - Q1
+
+# Define outlier bounds
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# Identify and remove outliers
+
+
+list_ = []
+for x in data:
+    if x < lower_bound or x > upper_bound:
+        list_ += [x]
+
+print("Outliers:", list_)
+
+data_free_from_outlier = []
+for x in data:
+    if lower_bound <= x <= upper_bound:
+        data_free_from_outlier += [x] 
+
+print("Data without outliers:", data_free_from_outlier)
+# filtered_data = [x for x in data if lower_bound <= x <= upper_bound]
+# print("Data without outliers:", filtered_data)
+
+
+"""
+Q8. 	In the population, the mean weight is 82. A team of dietitians wants to test a new 
+protein supplier to see if it has either a positive or negative effect on diet, or no effect at all. 
+A sample of 15 participants who have taken the protein supplier. Did the protein supplier affect diet? Where alpha=0.05. 	[10] 
+		Before 	After 		
+		90 	85 		
+		82 	88 		
+		77 	86 		
+		81 	80 		
+
+	 	98 	86 			
+		100 	99 			
+		111 	98 			
+		84 	79 			
+		85 	79 			
+		81 	78 			
+		81 	76 			
+		73 	78 			
+		81 	78 			
+		89 	74 			
+		83 	78 			
+
+"""
+import numpy as np
+from scipy import stats
+
+before = np.array([90, 82, 77, 81, 98, 100, 111, 84, 85, 81, 81, 73, 81, 89, 83])
+after  = np.array([85, 88, 86, 80, 86, 99, 98, 79, 79, 78, 76, 78, 78, 74, 78])
+
+"""
+State Hypothesis:
+
+Null hypothesis (H₀): The mean difference = 0 (no effect).
+Alternative hypothesis (H₁): The mean difference ≠ 0 (effect present).
+
+"""
+
+
+diff = after - before
+mean_diff = np.mean(diff)
+std_diff = np.std(diff, ddof=1)
+n = len(diff)
+
+t_stat = mean_diff / (std_diff / np.sqrt(n))
+p_value = stats.ttest_rel(after, before).pvalue
+
+critical_t_value = stats.t.ppf(1 - 0.05/2, df=n-1)
+
+# print(f"Critical t-value : ±{critical_t_value:.2f}")
+# print(f"Mean difference: {mean_diff:.2f}")
+# print(f"t-statistic: {t_stat:.2f}")
+# print(f"p-value: {p_value:.4f}")
+
+
+
+"""
+Decision: here t-statistic score  < critical t value , #There is not enough statistical evidence
+to conclude that the protein supplier had a significant effect on diet at the 0.05 significance level.
+p-value 0.058 ≥ 0.05, fail to reject H₀: No significant effect in the protien suppliers.
+"""
+
+
+"""
+Q9. 	Annual project of university done by three groups of students with equal sample sizes. 
+Each group was given a different task. After the final presentation students get the marks. 
+The scores are given below. Find out whether groups performed the same or not. 		[10] 
+		         Group1_Marks 	       Group2_Marks 	        Group3_Marks 		
+		80 	  96 	90 		
+		30 	77 	87  		
+		40 	65 	75 		
+		70 	88 	58 		
+		88 	74 	84 		
+		85 	83 	90 		
+
+"""
+
+"""
+Hypothesis Setup:
+
+Null Hypothesis (H₀): The mean marks of all three groups are equal. (μ₁ = μ₂ = μ₃)
+Alternative Hypothesis (H₁): At least one group's mean marks is different.
+
+We use one-way ANOVA to test these hypotheses.
+If p-value ≥ 0.05, we fail to reject H₀ and conclude that all groups performed similarly.
+"""
+
+
+
+
+from scipy.stats import f_oneway
+
+group1 = [80, 30, 40, 70, 88, 85]
+group2 = [96, 77, 65, 88, 74, 83]
+group3 = [90, 87, 75, 58, 84, 90]
+
+# # Perform one-way ANOVA
+# f_stat, p_value = f_oneway(group1, group2, group3)
+
+# print(f"ANOVA F-statistic: {f_stat:.2f}")
+# print(f"ANOVA p-value: {p_value:.4f}")
+
+
+
+# f_stat , p_value  = f_oneway(group1 , group2 , group3)
+# print(f"F_static score for ANOVA test {f_stat : .4f}")
+# print(f"P_value among the three values {p_value : .4f}")
+
+
+# if p_value < 0.05:
+#     print("There is a significant difference between the groups' performances.")
+# else:
+#     print("There is no significant difference between the groups' performances.")
+
+"""
+Here , p-value < 0.05, we reject H₀ and conclude that at least one group performed differently.
+
+If the p-value < 0.05, at least one group performed differently.
+If the p-value ≥ 0.05, all groups performed similarly.
+"""
+
+
+
+"""
+Q10. 	 	 
+The number of customers that arrive on different days in a week at the Hotel Taj is given below. Test the claim that the different days of	 	[10] 
+	the week have the same frequency of customers. (Use the significance level as 0.1.**) 	
+		 	Day 	No. of Customers 		
+		0 	Mon 	1419 		
+		1 	Tues 	1320 		
+		2 	Wed 	1526 		
+		3 	Thurs 	1289 		
+		4 	Fri 	1620 		
+		5 	Sat 	2067 		
+		6 	Sun 	2055 		
+		7 	Total 	11296 		
+ 
+
+"""
+
+# import numpy as np
+# from scipy.stats import chisquare
+
+# observed = np.array([1419, 1320, 1526, 1289, 1620, 2067, 2055])
+# total_customers = observed.sum()
+
+# expected = np.array([total_customers / len(observed)] * len(observed))
+
+# chi_stat, p_value = chisquare(f_obs=observed, f_exp=expected)
+
+# print("Chi-Square Statistic:", chi_stat)
+# print("P-Value:", p_value)
+
+# alpha = 0.10
+# if p_value < alpha:
+#     print("\nResult: Reject Null Hypothesis (H0).")
+#     print("Conclusion: Customer distribution across days is NOT uniform.")
+# else:
+#     print("\nResult: Fail to Reject Null Hypothesis (H0).")
+#     print("Conclusion: Customer distribution across days is uniform.")
+
+
+
+
+
+
+
+
